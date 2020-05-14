@@ -1,12 +1,22 @@
 module.exports = [
     {
         type: 'confirm',
-        name: 'private',
-        message: 'this resgistery is private?'
+        name: 'less',
+        message: '是否使用less?'
     },
     {
-        type: 'input',
-        name: 'author',
-        message: 'author'
+        type: 'confirm',
+        name: 'eslint',
+        message: '是否使用eslint?'
     },
+    {
+        type: 'confirm',
+        name: 'typescript',
+        message: '是否使用typescript?'
+    },
+    // {
+    //     type: 'input',
+    //     name: 'author',
+    //     message: 'author'
+    // },
 ]

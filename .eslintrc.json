@@ -6,7 +6,7 @@
     "extends": [
         "eslint:recommended",
         <%_ if(typescript) { _%>
-            "plugin:@typescript-eslint/eslint-recommended"
+        "plugin:@typescript-eslint/eslint-recommended"
         <%_ } _%>
     ],
     "globals": {

@@ -4,11 +4,11 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    <% if(eslint) { %>
-      "lint": "eslint **/*.ts -c .eslintrc.json -o lint-result.html -f html && echo \"\\033[32m√ eslint通过\\033[0m\" || echo \"\\033[31mX eslint不通过\\033[0m\""
-    <% } %>
+    <%_ if(eslint) { _%>
+    "lint": "eslint **/*.ts -c .eslintrc.json -o lint-result.html -f html && echo \"\\033[32m√ eslint通过\\033[0m\" || echo \"\\033[31mX eslint不通过\\033[0m\""
+    <%_ } _%>
   },
-  <% if(eslint) { %>
+  <%_ if(eslint) { _%>
     "gitHooks": {
       "pre-commit": "lint-staged"
     },
@@ -18,7 +18,7 @@
         "git add"
       ]
     },
-  <% } %>
+  <%_ } _%>
   "repository": {
     "type": "git",
     "url": "git+https://github.com/wd-cli/mq-template.git"
@@ -31,17 +31,17 @@
   },
   "homepage": "https://github.com/wd-cli/mq-template#readme",
   "devDependencies": {
-    <% if(eslint) { %>
+    <%_ if(eslint) { _%>
         "@typescript-eslint/eslint-plugin": "^2.33.0",
         "@typescript-eslint/parser": "^2.33.0",
         "eslint": "^7.0.0",
-    <% } %>
-    <% if(less) { %>
+    <%_ } _%>
+    <%_ if(less) { _%>
       "gulp-less": "^4.0.1",
-    <% } %>
-    <% if(less) { %>
-      "typescript": "^3.9.2"
-    <% } %>
+    <%_ } _%>
+    <%_ if(less) { _%>
+      "typescript": "^3.9.2",
+    <%_ } _%>
     "lerna": "^3.21.0",
   }
 }

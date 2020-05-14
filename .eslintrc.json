@@ -5,20 +5,26 @@
     },
     "extends": [
         "eslint:recommended",
-        "plugin:@typescript-eslint/eslint-recommended"
+        <%_ if(typescript) { _%>
+            "plugin:@typescript-eslint/eslint-recommended"
+        <%_ } _%>
     ],
     "globals": {
         "Atomics": "readonly",
         "SharedArrayBuffer": "readonly"
     },
-    "parser": "@typescript-eslint/parser",
+    <%_ if(typescript) { _%>
+        "parser": "@typescript-eslint/parser",
+    <%_ } _%>
     "parserOptions": {
         "ecmaVersion": 11,
         "sourceType": "module"
     },
-    "plugins": [
-        "@typescript-eslint"
-    ],
+    <%_ if(typescript) { _%>
+        "plugins": [
+            "@typescript-eslint"
+        ],
+    <%_ } _%>
     "rules": {
         //代码检查
         //警告

@@ -1,1 +1,3 @@
-<view>hello</view>
+<view class="icon anticon-buyer anticon-yonghu">
+    <text>hello world</text>
+</view>

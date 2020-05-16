@@ -1,0 +1,23 @@
+{
+  "name": "mq-template",
+  "description": "",
+  "main": "",
+  "authors": [
+    "zhengxi"
+  ],
+  "license": "ISC",
+  "keywords": [
+    "gulp",
+    "lerna",
+    "bower"
+  ],
+  "homepage": "",
+  "ignore": [
+    "/*",
+    "!/dist",
+    "/dist/lib",
+    "/dist/app.json",
+    "/dist/app.js",
+    "/dist/app.wxss"
+  ]
+}

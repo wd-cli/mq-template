@@ -1,0 +1,13 @@
+{
+  "name": "example01",
+  "homepage": "",
+  "authors": [
+    "zhengxi01 <zhengxi01@weidian.com>"
+  ],
+  "description": "例子1",
+  "main": "",
+  "license": "MIT",
+  "ignore": [ 
+    
+  ]
+}

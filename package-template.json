@@ -4,7 +4,19 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    <%_ if(eslint) { _%>
+    "start": "node gulp/server;",
+    "dev": "gulp -f ./gulp/gulpfile.js dev;",
+    "dev-daily": "gulp -f ./gulp/gulpfile.js dev-daily;",
+    "dev-pre": "gulp -f ./gulp/gulpfile.js dev-prepare;",
+    "dev-prod": "gulp -f ./gulp/gulpfile.js dev-product;",
+    "daily": "gulp -f ./gulp/gulpfile.js daily;",
+    "pre": "gulp -f ./gulp/gulpfile.js prepare;",
+    "prod": "gulp -f ./gulp/gulpfile.js product;",
+    "publish": "gulp -f ./gulp/gulpfile.js publish;",
+    <%_ if(eslint && !typescript) { _%>
+    "lint": "eslint **/*.ts -c .eslintrc.json -o lint-result.html -f html && echo \"\\033[32m√ eslint通过\\033[0m\" || echo \"\\033[31mX eslint不通过\\033[0m\"",
+    <%_ } _%>
+    <%_ if(eslint && typescript) { _%>
     "lint": "eslint **/*.ts -c .eslintrc.json -o lint-result.html -f html && echo \"\\033[32m√ eslint通过\\033[0m\" || echo \"\\033[31mX eslint不通过\\033[0m\""
     <%_ } _%>
   },

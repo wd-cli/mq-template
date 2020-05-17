@@ -2,8 +2,17 @@
   "name": "mq-template",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "gulp/gulpfile.js",
   "scripts": {
+    "start": "node gulp/server;",
+    "dev": "gulp --gulpfile ./gulp/gulpfile.js dev;",
+    "dev-daily": "gulp --gulpfile ./gulp/gulpfile.js dev-daily;",
+    "dev-pre": "gulp --gulpfile ./gulp/gulpfile.js dev-prepare;",
+    "dev-prod": "gulp --gulpfile ./gulp/gulpfile.js dev-product;",
+    "daily": "gulp --gulpfile ./gulp/gulpfile.js daily;",
+    "pre": "gulp --gulpfile ./gulp/gulpfile.js prepare;",
+    "prod": "gulp --gulpfile ./gulp/gulpfile.js product;",
+    "publish": "gulp --gulpfile ./gulp/gulpfile.js publish;",
     "lint": "eslint \"src/**/*.{js,ts}\"  -c .eslintrc.json -o lint-result.html -f html && echo \"\\033[32m√ eslint通过\\033[0m\" || echo \"\\033[31mX eslint不通过\\033[0m\""
   },
   "husky": {
@@ -37,6 +46,7 @@
     "extend": "latest",
     "gulp": "^3.9.1",
     "gulp-clean-css": "^2.3.2",
+    "gulp-csslint": "^1.0.1",
     "gulp-eslint": "^2.1.0",
     "gulp-htmlmin": "^3.0.0",
     "gulp-json-editor": "^2.5.4",

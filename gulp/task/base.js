@@ -1,17 +1,22 @@
 const gulp = require('gulp');
+const fs = require('fs');
+const rename = require('gulp-rename');
+const jsonEditor = require('gulp-json-editor');
+const less = require('gulp-less');
 const del = require('del');
+const path = require('path');
 const runSequence = require('run-sequence');
 const eslint = require('gulp-eslint');
 const csslint = require('gulp-csslint');
 const modules = require('../common');
+let { gobalChangeFileObj, changeFileHandle } = require('../fileWatcher');
 const { CSS_SUFFIX, HTML_SUFFIX, LEFT_DELIMITER, RIGHT_DELIMITER, ORIGIN_CSS_SUFFIX, ORIGIN_HTML_SUFFIX, publishIgnore } = require('../constants');
 
-let config = require('./config');
+let config = require('../config');
 
 //clean
 gulp.task('clean', function() {
-    config.build === 'build' && del.sync('build');
-    config.build === 'dist' && del.sync('dist');
+    del.sync(config.build, {force: true})
 });
 
 // eslint
@@ -31,14 +36,13 @@ gulp.task('csslint', ['default'], function() {
 });
 
 gulp.task('json', function() {
-    // if (gobalChangeFileObj) return changeFileHandle();
     if (config.mode == 1) {
         return null;
     }
 
     var source = [path.join(config.src, config.pages, '/**/*.' + ORIGIN_HTML_SUFFIX), path.join(config.src, config.lib, '/**/*.' + ORIGIN_HTML_SUFFIX), '!' + path.join(config.src, '/**/', config.ignore)],
         stream,
-        temp = 'mock/temp',
+        temp = path.join(config.build, 'mock/temp'),
         jsonSource = path.join(config.src, 'app.json'),
         files = []
 
@@ -63,7 +67,7 @@ gulp.task('json', function() {
     }))
 
     return stream.pipe(gulp.dest(temp)).on('end', function() {
-        del.sync(temp);
+        del.sync(temp, {force: true});
         gulp.src(jsonSource)
             .pipe(jsonEditor(function(json) {
                 files = (json.pages || []).concat(files);
@@ -77,24 +81,24 @@ gulp.task('json', function() {
             .pipe(gulp.dest(config.build))
     })
 });
-gulp.task('include', function() {
-    if (config.mode == 2) {
-        return null;
-    }
+// gulp.task('include', function() {
+//     if (config.mode == 2) {
+//         return null;
+//     }
 
-    var source = [],
-        stream;
+//     var source = [],
+//         stream;
 
-    config.include.forEach(function(name) {
-        source.push(path.join(config.src, config.lib, name, '/**/*'));
-    });
+//     config.include.forEach(function(name) {
+//         source.push(path.join(config.src, config.lib, name, '/**/*'));
+//     });
 
-    stream = gulp.src(source, {
-        base: config.src
-    });
+//     stream = gulp.src(source, {
+//         base: config.src
+//     });
 
-    return stream.pipe(gulp.dest(config.build));
-});
+//     return stream.pipe(gulp.dest(config.build));
+// });
 gulp.task('html', function() {
     if (gobalChangeFileObj) return changeFileHandle();
     var source = [path.join(config.src, '/**/*.' + ORIGIN_HTML_SUFFIX), '!' + path.join(config.src, '/**/', config.ignore)],
@@ -148,7 +152,7 @@ gulp.task('css', function() {
 });
 gulp.task('default', function(cb) {
     var args = [
-        'clean', 'copyassets', 'json', ['js', 'css', 'html'], 'include'
+        'clean', 'copyassets', 'json', ['js', 'css', 'html']
     ];
     //删除目录
     modules.clean();

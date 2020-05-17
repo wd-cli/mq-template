@@ -1,12 +1,15 @@
 
 const gulp = require('gulp');
+const path = require('path');
 const childProcess = require('child_process');
+const config = require('../config');
+const { CSS_SUFFIX, HTML_SUFFIX, LEFT_DELIMITER, RIGHT_DELIMITER, ORIGIN_CSS_SUFFIX, ORIGIN_HTML_SUFFIX, publishIgnore } = require('../constants');
 
 let { gobalChangeFileObj } = require('../fileWatcher');
 
 //server
 function startServer() {
-    var child = childProcess.spawn('node', ['hap.server']);
+    var child = childProcess.spawn('node', ['server']);
 
     child.on('error', function(e) {
         console.log('server error');
@@ -40,7 +43,7 @@ gulp.task('watch', ['default'], function(cb) {
         gulp.start('html');
     });
 
-    //watch css
+    //watch wxss
     source = [path.join(config.src, '/**/*.' + ORIGIN_CSS_SUFFIX)];
     gulp.watch(source, function(event) {
         gobalChangeFileObj = event;

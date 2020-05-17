@@ -1,7 +1,7 @@
 var koa = require('koa'),
     send = require('koa-send'),
     path = require('path'),
-    config = require("./hap.config"),
+    config = require("./config"),
     app = koa();
 
 var JSON_EXT = ".json";

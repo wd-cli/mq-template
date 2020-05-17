@@ -1,14 +1,21 @@
 //公用模块
 const util = require('./util');
+const del = require('del');
+const path = require('path');
+const replace = require('gulp.replace');
+const config = require('./config');
+const { LEFT_DELIMITER, RIGHT_DELIMITER} = require('./constants');
 
-module.exports = {
+
+
+let common =  {
     flag: false,
     //替换变量
     replace: function(stream, replaceSettings) {
         replaceSettings = replaceSettings || []
 
         // 非组件开发模式进行替换
-        !this.flag && config.mode !== 1 && replaceSettings.push({
+        !common.flag && config.mode !== 1 && replaceSettings.push({
             name: "path",
             value: function(args, file) {
                 return function(search, file) {
@@ -19,7 +26,7 @@ module.exports = {
             }
         });
 
-        this.flag = true;
+        common.flag = true;
 
         replaceSettings && replaceSettings.forEach(function(value) {
             //获取替换字符串
@@ -56,7 +63,8 @@ module.exports = {
     },
 
     clean: function() {
-        del.sync(config.build);
+        del.sync(config.build, {force: true});
     },
     
 };
+module.exports = common;

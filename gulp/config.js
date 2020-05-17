@@ -16,14 +16,16 @@
     environment: 当前环境变量
     dev: 是否是开发环境
  */
+const path = require('path');
+
 module.exports = {
     //项目名称
     name: "shop",
     //server端口
     port: 5020,
-    src: 'src',
+    src: path.resolve(__dirname, '../src'),
     lib: 'lib',
-    build: 'build',
+    build: path.resolve(__dirname, '../build'),
     pages: 'pages',
     //标志环境配置变量，默认为线上环境
     environment: 3,
@@ -33,7 +35,7 @@ module.exports = {
     mode: 2, //1:组件开发模式，2：项目开发模式
     assets: '*.json',
     ignore: '{bower.json,.bower.json}',
-    include: [],
+    // include: [],
     //replace功能，可替换指定变量
     replace: [{
         //环境变量

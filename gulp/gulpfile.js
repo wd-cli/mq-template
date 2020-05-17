@@ -1,5 +1,6 @@
 const gulp = require('gulp');
 const runSequence = require('run-sequence');
+const path = require('path');
 
 let config = require('./config');
 
@@ -63,6 +64,6 @@ gulp.task('publish', ['eslint'], function(cb) {
     config.environment = 3;
     config.dev = false;
     config.mode = 1;
-    config.build = 'dist';
+    config.build = path.relative(__dirname, '../dist');
     runSequence('default', cb);
 });

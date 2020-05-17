@@ -1,13 +1,15 @@
 const gulp = require('gulp');
+const path = require('path');
 const cleancss = require('gulp-clean-css');
 const modules = require('../common');
 const { CSS_SUFFIX, HTML_SUFFIX, LEFT_DELIMITER, RIGHT_DELIMITER, ORIGIN_CSS_SUFFIX, ORIGIN_HTML_SUFFIX, publishIgnore } = require('../constants');
 
-let config = require('./config');
+let config = require('../config');
 let { gobalChangeFileObj, changeFileHandle } = require('../fileWatcher');
 
 
-gulp.task('copyassets', ['copywxhtml', 'copywxss'], function() {
+
+gulp.task('copyassets', [], function() {
     if (gobalChangeFileObj) return changeFileHandle();
     //如果assets为空，则直接返回
     if (!config.assets) {

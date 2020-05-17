@@ -1,6 +1,9 @@
 // 工具函数
+const path = require('path');
+const fs = require('fs');
+const config = require('./config');
 
-export default {
+let util = {
     //获取参数
     getArguments: function(config) {
         return {
@@ -66,3 +69,5 @@ export default {
         }
     }
 };
+
+module.exports = util;

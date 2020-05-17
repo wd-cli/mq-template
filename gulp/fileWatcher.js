@@ -1,4 +1,5 @@
 // 监听当前文件变化实例子
+const path = require('path');
 
 module.exports = {
     gobalChangeFileObj: null, // 当前变化的文件对象

@@ -1,5 +1,6 @@
 const gulp = require('gulp');
 const fs = require('fs');
+const babel = require('gulp-babel');
 const rename = require('gulp-rename');
 const jsonEditor = require('gulp-json-editor');
 const less = require('gulp-less');
@@ -10,14 +11,19 @@ const eslint = require('gulp-eslint');
 const csslint = require('gulp-csslint');
 const modules = require('../common');
 let { gobalChangeFileObj, changeFileHandle } = require('../fileWatcher');
-const { CSS_SUFFIX, HTML_SUFFIX, LEFT_DELIMITER, RIGHT_DELIMITER, ORIGIN_CSS_SUFFIX, ORIGIN_HTML_SUFFIX, publishIgnore } = require('../constants');
+const { CSS_SUFFIX, HTML_SUFFIX, LEFT_DELIMITER, RIGHT_DELIMITER, ORIGIN_CSS_SUFFIX, ORIGIN_HTML_SUFFIX, publishIgnore, } = require('../constants');
 
 let config = require('../config');
 
 //clean
-gulp.task('clean', function() {
-    del.sync(config.build, {force: true})
-});
+// gulp.task('clean', function() {
+//     del.sync(config.build, {force: true})
+// });
+
+
+gulp.task('copy.package.json', function() {
+   return gulp.src(config.root + '/package.json').pipe(gulp.dest(config.build))
+}) 
 
 // eslint
 gulp.task('eslint', function() {
@@ -39,7 +45,6 @@ gulp.task('json', function() {
     if (config.mode == 1) {
         return null;
     }
-
     var source = [path.join(config.src, config.pages, '/**/*.' + ORIGIN_HTML_SUFFIX), path.join(config.src, config.lib, '/**/*.' + ORIGIN_HTML_SUFFIX), '!' + path.join(config.src, '/**/', config.ignore)],
         stream,
         temp = path.join(config.build, 'mock/temp'),
@@ -49,7 +54,6 @@ gulp.task('json', function() {
     stream = gulp.src(source, {
         base: config.src
     });
-
     stream = stream.pipe(rename(function(file) {
         if (file.dirname.indexOf(config.pages) !== -1) {
 
@@ -65,7 +69,6 @@ gulp.task('json', function() {
             });
         }
     }))
-
     return stream.pipe(gulp.dest(temp)).on('end', function() {
         del.sync(temp, {force: true});
         gulp.src(jsonSource)
@@ -105,12 +108,9 @@ gulp.task('html', function() {
         stream;
 
     !config.dev && config.mode == 1 && source.push('!' + path.join(config.src, config.lib, '/**/*'));
-
     stream = gulp.src(source);
-
     //替换变量
     stream = modules.replace(stream, config.replace);
-
     stream = stream.pipe(rename(function(path) {
         path.extname = "." + HTML_SUFFIX
     }));
@@ -120,24 +120,23 @@ gulp.task('js', function() {
     if (gobalChangeFileObj) return changeFileHandle();
     var source = [path.join(config.src, '/**/*.js'), '!' + path.join(config.src, '/**/', config.ignore)],
         stream;
-
     !config.dev && config.mode == 1 && source.push('!' + path.join(config.src, '/**/', publishIgnore));
     !config.dev && config.mode == 1 && source.push('!' + path.join(config.src, config.lib, '/**/*'));
-
     stream = gulp.src(source);
     //替换变量
     stream = modules.replace(stream, config.replace);
     stream = modules.replaceJsPath(stream);
-
-    return stream.pipe(gulp.dest(config.build));
+    return stream
+            .pipe(babel({
+                presets: ['@babel/env']
+            }))
+            .pipe(gulp.dest(config.build));
 });
 gulp.task('css', function() {
     if (gobalChangeFileObj) return changeFileHandle();
     var source = [path.join(config.src, '/**/*.' + ORIGIN_CSS_SUFFIX), '!' + path.join(config.src, '/**/', config.ignore), '!' + path.join(config.src, config.lib, '/**/*')],
         stream;
-
     !config.dev && config.mode == 1 && source.push('!' + path.join(config.src, '/**/', publishIgnore));
-
     stream = gulp.src(source, {
         base: config.src
     });
@@ -152,7 +151,7 @@ gulp.task('css', function() {
 });
 gulp.task('default', function(cb) {
     var args = [
-        'clean', 'copyassets', 'json', ['js', 'css', 'html']
+        'copyassets', 'json', ['js', 'css', 'html'], 'copy.package.json'
     ];
     //删除目录
     modules.clean();

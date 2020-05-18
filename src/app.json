@@ -13,5 +13,10 @@
     "navigationBarBackgroundColor": "#fff",
     "backgroundColor": "#f5f5f5"
   },
-  "sitemapLocation": "sitemap.json"
+  "sitemapLocation": "sitemap.json",
+  "usingComponents": {
+    "recycle-view": "miniprogram-recycle-view/recycle-view",
+    "recycle-item": "miniprogram-recycle-view/recycle-item"
+  }
 }
+

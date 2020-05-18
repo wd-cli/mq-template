@@ -13,6 +13,7 @@
     "pre": "gulp --gulpfile ./gulp/gulpfile.js prepare;",
     "prod": "gulp --gulpfile ./gulp/gulpfile.js product;",
     "publish": "gulp --gulpfile ./gulp/gulpfile.js publish;",
+    "m:init": "node gulp/CI.js",
     "lint": "eslint \"src/**/*.{js,ts}\"  -c .eslintrc.json -o lint-result.html -f html && echo \"\\033[32m√ eslint通过\\033[0m\" || echo \"\\033[31mX eslint不通过\\033[0m\""
   },
   "husky": {
@@ -22,7 +23,7 @@
   },
   "lint-staged": {
     "*.{ts,js}": [
-      "eslint --fix",
+      "eslint -c .eslintrc.json --fix",
       "git add"
     ]
   },
@@ -38,6 +39,8 @@
   },
   "homepage": "https://github.com/wd-cli/mq-template#readme",
   "devDependencies": {
+    "@babel/core": "^7.9.6",
+    "@babel/preset-env": "^7.9.6",
     "@typescript-eslint/eslint-plugin": "^2.33.0",
     "@typescript-eslint/parser": "^2.33.0",
     "babel-eslint": "^6.1.2",
@@ -45,6 +48,7 @@
     "eslint": "^7.0.0",
     "extend": "latest",
     "gulp": "^3.9.1",
+    "gulp-babel": "^8.0.0",
     "gulp-clean-css": "^2.3.2",
     "gulp-csslint": "^1.0.1",
     "gulp-eslint": "^2.1.0",
@@ -58,8 +62,12 @@
     "koa-send": "^3.1.1",
     "lerna": "^3.21.0",
     "lint-staged": "^10.2.2",
+    "miniprogram-ci": "^1.0.29",
     "prettier": "^2.0.5",
     "run-sequence": "latest",
     "typescript": "^3.9.2"
+  },
+  "dependencies": {
+    "miniprogram-recycle-view": "^0.1.5"
   }
 }

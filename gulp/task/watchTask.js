@@ -3,7 +3,8 @@ const gulp = require('gulp');
 const path = require('path');
 const childProcess = require('child_process');
 const config = require('../config');
-const { CSS_SUFFIX, HTML_SUFFIX, LEFT_DELIMITER, RIGHT_DELIMITER, ORIGIN_CSS_SUFFIX, ORIGIN_HTML_SUFFIX, publishIgnore } = require('../constants');
+const runSequence = require('run-sequence');
+const { ORIGIN_CSS_SUFFIX, ORIGIN_HTML_SUFFIX } = require('../constants');
 
 let { gobalChangeFileObj } = require('../fileWatcher');
 
@@ -20,17 +21,14 @@ function startServer() {
     child.stderr.on('data', function(data) {
         console.log(data.toString());
     });
-
     process.once('exit', function() {
         console.log('process exit');
         child && child.kill();
     });
-
     process.once('error', function() {
         console.log('process error');
         child && child.kill();
     });
-
     console.log('服务启动。地址 http://h5.dev.weidian.com:' + config.port);
 }
 
@@ -42,21 +40,18 @@ gulp.task('watch', ['default'], function(cb) {
         gobalChangeFileObj = event;
         gulp.start('html');
     });
-
     //watch wxss
     source = [path.join(config.src, '/**/*.' + ORIGIN_CSS_SUFFIX)];
     gulp.watch(source, function(event) {
         gobalChangeFileObj = event;
         gulp.start('css');
     });
-
     //watch assets
     source = [path.join(config.src, '/**/', String(config.assets))];
     gulp.watch(source, function(event) {
         gobalChangeFileObj = event;
         runSequence('copyassets', 'json');
     });
-
     //watch js
     source = [path.join(config.src, '/**/*.js')];
     gulp.watch(source, function(event) {

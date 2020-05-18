@@ -2,12 +2,10 @@ const gulp = require('gulp');
 const path = require('path');
 const cleancss = require('gulp-clean-css');
 const modules = require('../common');
-const { CSS_SUFFIX, HTML_SUFFIX, LEFT_DELIMITER, RIGHT_DELIMITER, ORIGIN_CSS_SUFFIX, ORIGIN_HTML_SUFFIX, publishIgnore } = require('../constants');
+const { CSS_SUFFIX, HTML_SUFFIX, publishIgnore } = require('../constants');
 
 let config = require('../config');
 let { gobalChangeFileObj, changeFileHandle } = require('../fileWatcher');
-
-
 
 gulp.task('copyassets', [], function() {
     if (gobalChangeFileObj) return changeFileHandle();
@@ -52,17 +50,13 @@ gulp.task('copywxss', function() {
     }
     var source = [path.join(config.src, config.lib, '/**/*.' + CSS_SUFFIX), '!' + path.join(config.src, '/**/', config.ignore)],
         stream;
-
     stream = gulp.src(source, {
         base: config.src
     });
-
     //替换变量
     stream = modules.replace(stream, config.replace);
-
     stream = modules.replaceCssPath(stream);
-
     !config.dev && config.compress && (stream = stream.pipe(cleancss()));
-
     return stream.pipe(gulp.dest(config.build));
 });
+

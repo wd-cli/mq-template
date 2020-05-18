@@ -23,6 +23,7 @@ module.exports = {
     name: "shop",
     //server端口
     port: 5020,
+    root: path.resolve(__dirname, '../'),
     src: path.resolve(__dirname, '../src'),
     lib: 'lib',
     build: path.resolve(__dirname, '../build'),

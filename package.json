@@ -14,7 +14,7 @@
     "prod": "gulp --gulpfile ./gulp/gulpfile.js product;",
     "publish": "gulp --gulpfile ./gulp/gulpfile.js publish;",
     "m:init": "node gulp/CI.js",
-    "lint": "eslint \"src/**/*.{js,ts}\" -o lint-result.html -f html && echo \"\\033[32m√ eslint通过\\033[0m\" || echo \"\\033[31mX eslint不通过\\033[0m\""
+    "lint": "eslint \"src/**/*.{js}\" -o lint-result.html -f html && echo \"\\033[32m√ eslint通过\\033[0m\" || echo \"\\033[31mX eslint不通过\\033[0m\""
   },
   "husky": {
     "hooks": {

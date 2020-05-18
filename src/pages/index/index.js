@@ -2,6 +2,7 @@ let Index = {
     data: {},
     components: {},
     onShow() {
+        debugger
         let a = () => {
             console.log(a)
         }

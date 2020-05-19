@@ -29,7 +29,9 @@
     "src/**/*.{js,ts}": [
       "eslint  -c .eslintrc.js  --fix",
       "git add"
-    ]
+    ],
+    "*.js": "eslint --cache --fix",
+    "*.{js,css,md}": "prettier --write"
   },
   "keywords": [
     "gulp",

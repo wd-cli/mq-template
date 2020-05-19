@@ -22,6 +22,10 @@
     }
   },
   "lint-staged": {
+    "*.{js,ts}": [
+      "eslint  -c .eslintrc.js  --fix",
+      "git add"
+    ],
     "src/**/*.{js,ts}": [
       "eslint  -c .eslintrc.js  --fix",
       "git add"

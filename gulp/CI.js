@@ -1,5 +1,6 @@
 const ci = require('miniprogram-ci');
 const path = require('path');
+const fs = require('fs');
 const ora = require('ora');
 const { promisify } = require('util');
 const ncp = require('ncp');
@@ -9,6 +10,10 @@ const config = require('./config');
 ;
 (async () => {
   let loading;
+  if (!fs.existsSync(config.build)) {
+    fs.mkdirSync(config.build);
+    fs.mkdirSync(config.build + '/node_modules');
+  }
   try {
     loading = ora('正在拷贝node_modules...');
     loading.start();

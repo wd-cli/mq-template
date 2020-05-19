@@ -13,10 +13,7 @@ const modules = require('../common');
 const { CSS_SUFFIX, HTML_SUFFIX, ORIGIN_CSS_SUFFIX, ORIGIN_HTML_SUFFIX, publishIgnore, } = require('../constants');
 let { gobalChangeFileObj, changeFileHandle } = require('../fileWatcher');
 let config = require('../config');
-//clean
-// gulp.task('clean', function() {
-//     del.sync(config.build, {force: true})
-// });
+
 
 // 构建npm需要
 gulp.task('copy.package.json', function() {
@@ -83,24 +80,7 @@ gulp.task('json', function() {
             .pipe(gulp.dest(config.build))
     })
 });
-// gulp.task('include', function() {
-//     if (config.mode == 2) {
-//         return null;
-//     }
 
-//     var source = [],
-//         stream;
-
-//     config.include.forEach(function(name) {
-//         source.push(path.join(config.src, config.lib, name, '/**/*'));
-//     });
-
-//     stream = gulp.src(source, {
-//         base: config.src
-//     });
-
-//     return stream.pipe(gulp.dest(config.build));
-// });
 gulp.task('html', function() {
     if (gobalChangeFileObj) return changeFileHandle();
     var source = [path.join(config.src, '/**/*.' + ORIGIN_HTML_SUFFIX), '!' + path.join(config.src, '/**/', config.ignore)],
@@ -133,7 +113,7 @@ gulp.task('js', function() {
 });
 gulp.task('css', function() {
     if (gobalChangeFileObj) return changeFileHandle();
-    var source = [path.join(config.src, '/**/*.' + `${ORIGIN_CSS_SUFFIX, CSS_SUFFIX}`), '!' + path.join(config.src, '/**/', config.ignore), '!' + path.join(config.src, config.lib, '/**/*')],
+    var source = [path.join(`${config.src}/**/*.{${ORIGIN_CSS_SUFFIX},${CSS_SUFFIX}}`), '!' + path.join(config.src, '/**/', config.ignore), '!' + path.join(config.src, config.lib, '/**/*')],
         stream;
     !config.dev && config.mode == 1 && source.push('!' + path.join(config.src, '/**/', publishIgnore));
     stream = gulp.src(source, {
@@ -145,7 +125,6 @@ gulp.task('css', function() {
     stream = stream.pipe(less()).pipe(rename(function(path) {
         path.extname = "." + CSS_SUFFIX
     }));
-    //!config.dev && config.compress && (stream = stream.pipe(cleancss()));
     return stream.pipe(gulp.dest(config.build));
 });
 gulp.task('default', function(cb) {

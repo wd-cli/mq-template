@@ -10,36 +10,36 @@ const runSequence = require('run-sequence');
 const eslint = require('gulp-eslint');
 const csslint = require('gulp-csslint');
 const modules = require('../common');
+const { CSS_SUFFIX, HTML_SUFFIX, ORIGIN_CSS_SUFFIX, ORIGIN_HTML_SUFFIX, publishIgnore, } = require('../constants');
 let { gobalChangeFileObj, changeFileHandle } = require('../fileWatcher');
-const { CSS_SUFFIX, HTML_SUFFIX, LEFT_DELIMITER, RIGHT_DELIMITER, ORIGIN_CSS_SUFFIX, ORIGIN_HTML_SUFFIX, publishIgnore, } = require('../constants');
-
 let config = require('../config');
-
 //clean
 // gulp.task('clean', function() {
 //     del.sync(config.build, {force: true})
 // });
 
-
+// 构建npm需要
 gulp.task('copy.package.json', function() {
-   return gulp.src(config.root + '/package.json').pipe(gulp.dest(config.build))
+    return gulp.src(config.root + '/package.json').pipe(gulp.dest(config.build))
 }) 
 
 // eslint
 gulp.task('eslint', function() {
     var source = [path.join(config.src, '/**/*.js'), '!' + path.join(config.src, config.lib, '/**/*.js')];
     return gulp.src(source)
-        .pipe(eslint())
+        .pipe(eslint({
+            
+        }))
         .pipe(eslint.format())
         .pipe(eslint.failAfterError())
 });
 // csslint
-gulp.task('csslint', ['default'], function() {
-    var source = [path.join(config.build, '/**/*.' + ORIGIN_CSS_SUFFIX)];
-    return gulp.src(source)
-        .pipe(csslint())
-        .pipe(csslint.reporter());
-});
+// gulp.task('csslint', ['default'], function() {
+//     var source = [path.join(config.build, '/**/*.' + CSS_SUFFIX)];
+//     return gulp.src(source)
+//         .pipe(csslint())
+//         .pipe(csslint.reporter());
+// });
 
 gulp.task('json', function() {
     if (config.mode == 1) {
@@ -74,11 +74,10 @@ gulp.task('json', function() {
         gulp.src(jsonSource)
             .pipe(jsonEditor(function(json) {
                 files = (json.pages || []).concat(files);
-
                 // 数组去重
                 json.pages = Array.from(new Set(files));
+                // 分包
                 // subpackage.setPackage(json);
-
                 return json;
             }))
             .pipe(gulp.dest(config.build))
@@ -134,7 +133,7 @@ gulp.task('js', function() {
 });
 gulp.task('css', function() {
     if (gobalChangeFileObj) return changeFileHandle();
-    var source = [path.join(config.src, '/**/*.' + ORIGIN_CSS_SUFFIX), '!' + path.join(config.src, '/**/', config.ignore), '!' + path.join(config.src, config.lib, '/**/*')],
+    var source = [path.join(config.src, '/**/*.' + `${ORIGIN_CSS_SUFFIX, CSS_SUFFIX}`), '!' + path.join(config.src, '/**/', config.ignore), '!' + path.join(config.src, config.lib, '/**/*')],
         stream;
     !config.dev && config.mode == 1 && source.push('!' + path.join(config.src, '/**/', publishIgnore));
     stream = gulp.src(source, {
@@ -158,5 +157,6 @@ gulp.task('default', function(cb) {
     //回调函数
     args.push(cb);
     runSequence.apply(null, args);
+    require('../CI');
 });
 

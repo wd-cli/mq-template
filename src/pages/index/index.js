@@ -5,7 +5,7 @@ let Index = {
         let a = () => {
             // console.log(a)
         }
-        a(1)
+        a()
     },
     onHide() {
 

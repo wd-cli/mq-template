@@ -60,10 +60,10 @@ gulp.task('product', function(cb) {
 });
 
 // publish 命令为发布组件
-gulp.task('publish', ['eslint'], function(cb) {
+gulp.task('publish', function(cb) {
     config.environment = 3;
     config.dev = false;
     config.mode = 1;
-    config.build = path.relative(__dirname, '../dist');
+    config.build = path.resolve(__dirname, '../dist');
     runSequence('default', cb);
 });

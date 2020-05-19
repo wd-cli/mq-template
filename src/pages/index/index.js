@@ -2,10 +2,8 @@ let Index = {
     data: {},
     components: {},
     onShow() {
-        debugger
-        
         let a = () => {
-            console.log(a)
+            // console.log(a)
         }
         a(1)
     },
@@ -16,5 +14,4 @@ let Index = {
 
     }
 }
-
 Page(Index);

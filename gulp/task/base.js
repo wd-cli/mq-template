@@ -4,6 +4,7 @@ const babel = require('gulp-babel');
 const rename = require('gulp-rename');
 const jsonEditor = require('gulp-json-editor');
 const less = require('gulp-less');
+const ts = require('gulp-typescript');
 const del = require('del');
 const path = require('path');
 const runSequence = require('run-sequence');
@@ -11,11 +12,12 @@ const eslint = require('gulp-eslint');
 const csslint = require('gulp-csslint');
 const modules = require('../common');
 const { CSS_SUFFIX, HTML_SUFFIX, ORIGIN_CSS_SUFFIX, ORIGIN_HTML_SUFFIX, publishIgnore, } = require('../constants');
-let { gobalChangeFileObj, changeFileHandle } = require('../fileWatcher');
+let fileWatcher = require('../fileWatcher');
 let config = require('../config');
 
 
-// 构建npm需要
+
+// 构建npm需要package.json
 gulp.task('copy.package.json', function() {
     return gulp.src(config.root + '/package.json').pipe(gulp.dest(config.build))
 }) 
@@ -39,6 +41,7 @@ gulp.task('eslint', function() {
 // });
 
 gulp.task('json', function() {
+    console.log('json')
     if (config.mode == 1) {
         return null;
     }
@@ -47,15 +50,12 @@ gulp.task('json', function() {
         temp = path.join(config.build, 'mock/temp'),
         jsonSource = path.join(config.src, 'app.json'),
         files = []
-
     stream = gulp.src(source, {
         base: config.src
     });
     stream = stream.pipe(rename(function(file) {
         if (file.dirname.indexOf(config.pages) !== -1) {
-
             var filepath = path.join(config.src, file.dirname, file.basename + '.js')
-
             // 判断文件是否是页面文件
             fs.exists(filepath, function(exists) {
 
@@ -82,7 +82,9 @@ gulp.task('json', function() {
 });
 
 gulp.task('html', function() {
-    if (gobalChangeFileObj) return changeFileHandle();
+   
+    if (fileWatcher.gobalChangeFileObj) return fileWatcher.changeFileHandle();
+    console.log('html')
     var source = [path.join(config.src, '/**/*.' + ORIGIN_HTML_SUFFIX), '!' + path.join(config.src, '/**/', config.ignore)],
         stream;
 
@@ -96,8 +98,15 @@ gulp.task('html', function() {
     return stream.pipe(gulp.dest(config.build));
 });
 gulp.task('js', function() {
-    if (gobalChangeFileObj) return changeFileHandle();
-    var source = [path.join(config.src, '/**/*.js'), '!' + path.join(config.src, '/**/', config.ignore)],
+   console.log('fileWatcher.gobalChangeFileObj base',fileWatcher.gobalChangeFileObj)
+
+    if (fileWatcher.gobalChangeFileObj) return fileWatcher.changeFileHandle();
+    console.log('js')
+    var source = [
+        path.join(config.src, '/**/*.js'), 
+        '!' + path.join(config.src, '/iconfont/*'), // iconfont不需要拷贝
+        '!' + path.join(config.src, '/**/', config.ignore)
+    ],
         stream;
     !config.dev && config.mode == 1 && source.push('!' + path.join(config.src, '/**/', publishIgnore));
     !config.dev && config.mode == 1 && source.push('!' + path.join(config.src, config.lib, '/**/*'));
@@ -111,8 +120,27 @@ gulp.task('js', function() {
             }))
             .pipe(gulp.dest(config.build));
 });
+gulp.task('ts', function() {
+    
+    if (fileWatcher.gobalChangeFileObj) return fileWatcher.changeFileHandle();
+    console.log('ts')
+    let tsProject = ts.createProject(config.root + '/tsconfig.json');
+    let source = [path.join(config.src, '/**/*.ts'), '!' + path.join(config.src, '/**/', config.ignore)];
+    let stream;
+    !config.dev && config.mode == 1 && source.push('!' + path.join(config.src, '/**/', publishIgnore));
+    !config.dev && config.mode == 1 && source.push('!' + path.join(config.src, config.lib, '/**/*'));
+    stream = gulp.src(source);
+    //替换变量
+    stream = modules.replace(stream, config.replace);
+    stream = modules.replaceJsPath(stream);
+    stream = stream.pipe(tsProject());
+    return stream
+            .pipe(gulp.dest(config.build));
+});
 gulp.task('css', function() {
-    if (gobalChangeFileObj) return changeFileHandle();
+   
+    if (fileWatcher.gobalChangeFileObj) return fileWatcher.changeFileHandle();
+    console.log('css')
     var source = [path.join(`${config.src}/**/*.{${ORIGIN_CSS_SUFFIX},${CSS_SUFFIX}}`), '!' + path.join(config.src, '/**/', config.ignore), '!' + path.join(config.src, config.lib, '/**/*')],
         stream;
     !config.dev && config.mode == 1 && source.push('!' + path.join(config.src, '/**/', publishIgnore));
@@ -129,7 +157,7 @@ gulp.task('css', function() {
 });
 gulp.task('default', function(cb) {
     var args = [
-        'copyassets', 'json', ['js', 'css', 'html'], 'copy.package.json'
+        'copyassets', 'json', ['ts', 'js', 'css', 'html'], 'copy.package.json'
     ];
     //删除目录
     modules.clean();

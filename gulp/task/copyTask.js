@@ -7,7 +7,7 @@ const { CSS_SUFFIX, HTML_SUFFIX, publishIgnore } = require('../constants');
 let config = require('../config');
 let { gobalChangeFileObj, changeFileHandle } = require('../fileWatcher');
 
-gulp.task('copyassets', [], function() {
+gulp.task('copyassets', ['copywxhtml', 'copywxss'], function() {
     if (gobalChangeFileObj) return changeFileHandle();
     //如果assets为空，则直接返回
     if (!config.assets) {

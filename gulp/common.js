@@ -51,8 +51,8 @@ let common =  {
     clean: function() {
         del.sync([
             config.build + '/*',
-            // '!' + config.build + '/miniprogram_npm',
-            // '!' + config.build + '/node_modules',
+            '!' + config.build + '/miniprogram_npm',
+            '!' + config.build + '/node_modules',
             '!' + config.build + '/*.json',
         ],{force: true})
     },

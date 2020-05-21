@@ -1,11 +1,16 @@
+// import a from '@common/index'
+
+
+
 let Index = {
     data: {},
     components: {},
     onShow() {
-        let a = () => {
-            // console.log(a)
-        }
-        a()
+        // let test = () => {
+        //     console.log(2222)
+        // }
+        // test();
+        // a();
     },
     onHide() {
 

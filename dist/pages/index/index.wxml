@@ -1,5 +1,5 @@
 <view>
-    <text class="icon anticon-buyer anticon-yonghu">hello world</text>
+    <text class="icon anticon-buyer anticon-yonghu txt">hello world</text>
     <recycle-view id="recycleId">
         <view slot="before">长列表前面的内容</view>
         <recycle-item>

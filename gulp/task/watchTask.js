@@ -4,9 +4,9 @@ const path = require('path');
 const childProcess = require('child_process');
 const config = require('../config');
 const runSequence = require('run-sequence');
-const { ORIGIN_CSS_SUFFIX, ORIGIN_HTML_SUFFIX } = require('../constants');
+const { ORIGIN_CSS_SUFFIX, CSS_SUFFIX, ORIGIN_HTML_SUFFIX } = require('../constants');
 
-let { gobalChangeFileObj } = require('../fileWatcher');
+let fileWatcher = require('../fileWatcher');
 
 //server
 function startServer() {
@@ -33,29 +33,36 @@ function startServer() {
 }
 
 gulp.task('watch', ['default'], function(cb) {
-    startServer();
+    // startServer();
     //watch html
     var source = [path.join(config.src, '/**/*.' + ORIGIN_HTML_SUFFIX)];
     gulp.watch(source, function(event) {
-        gobalChangeFileObj = event;
+        fileWatcher.gobalChangeFileObj = event;
         gulp.start('html');
     });
-    //watch wxss
-    source = [path.join(config.src, '/**/*.' + ORIGIN_CSS_SUFFIX)];
+    //watch less wxss
+    source = [path.join(config.src, '/**/*.' + `{${ORIGIN_CSS_SUFFIX},${CSS_SUFFIX}}`)];
     gulp.watch(source, function(event) {
-        gobalChangeFileObj = event;
+        fileWatcher.gobalChangeFileObj = event;
         gulp.start('css');
     });
     //watch assets
     source = [path.join(config.src, '/**/', String(config.assets))];
     gulp.watch(source, function(event) {
-        gobalChangeFileObj = event;
+        fileWatcher.gobalChangeFileObj = event;
         runSequence('copyassets', 'json');
     });
     //watch js
     source = [path.join(config.src, '/**/*.js')];
     gulp.watch(source, function(event) {
-        gobalChangeFileObj = event;
+        fileWatcher.gobalChangeFileObj = event;
+        console.log('fileWatcher.gobalChangeFileObj watch',fileWatcher.gobalChangeFileObj)
         gulp.start('js');
+    });
+    //watch ts
+    source = [path.join(config.src, '/**/*.ts')];
+    gulp.watch(source, function(event) {
+        fileWatcher.gobalChangeFileObj = event;
+        gulp.start('ts');
     });
 });

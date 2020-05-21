@@ -65,5 +65,6 @@ gulp.task('publish', function(cb) {
     config.dev = false;
     config.mode = 1;
     config.build = path.resolve(__dirname, '../dist');
+    // gulp.src(config.root + '/build/*.{json,js}').pipe(gulp.dest(config.root + '/dist'));
     runSequence('default', cb);
 });

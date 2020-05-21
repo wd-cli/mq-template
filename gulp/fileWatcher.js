@@ -14,7 +14,6 @@ let fileWatcher = {
     gobalChangeFileObj: null, // 当前变化的文件对象
     // 文件变化处理
     changeFileHandle() {
-        console.log('watch函数');
         let rootPath = fileWatcher.gobalChangeFileObj.path;
         let pathname,
             extname,

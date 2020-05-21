@@ -24,8 +24,11 @@ npm run npm:i
 - 拷贝stylesheet.css，拷贝到新建的iconfont.wxss文件
 - 最后拷贝iconfont.css文件中的class类样式到iconfont.wxss
 
-
-
+## 小程序CI工程配置 
+小程序开发者平台
+- appid 
+- privateKeyPath
+> IP白名单配置，可能构建会报IP地址无效
 
 - module-alias
 - gulp-shell

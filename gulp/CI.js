@@ -15,10 +15,7 @@ const config = require('./config');
   let isCache;
   let argv = process.argv[process.argv.length - 1];
   let project;
-  console.log('--------argv:', argv)
-  let packageJson = require(config.root + '/package.json');
-  let { dependencies } = packageJson;
-  dependencies = Object.keys(dependencies);
+  
   loading = ora();
   
   if (!fs.existsSync(config.build)) { // 第一次
@@ -28,11 +25,14 @@ const config = require('./config');
   } else { // 构建过一次
     if (argv === 'init' || argv === 'publish') { // 执行npm run npm:i 重新构建
       if (fs.existsSync(config.build, + '/node_modules')) {
+        loading.start('正在清空缓存...');
         del.sync([
           config.build + '/node_modules',
           config.build + '/miniprogram_npm',
+          config.build + '/package.json'
         ], { force: true });
-        fs.mkdirSync(config.build + '/node_modules');
+        loading.succeed('清空完毕');
+        await promisifyNcp(config.root + '/package.json', config.build + '/package.json');
       }
       isCache = false;
     } else {

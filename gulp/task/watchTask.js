@@ -33,7 +33,7 @@ function startServer() {
 }
 
 gulp.task('watch', ['default'], function(cb) {
-    // startServer();
+    startServer();
     //watch html
     var source = [path.join(config.src, '/**/*.' + ORIGIN_HTML_SUFFIX)];
     gulp.watch(source, function(event) {
@@ -56,7 +56,6 @@ gulp.task('watch', ['default'], function(cb) {
     source = [path.join(config.src, '/**/*.js')];
     gulp.watch(source, function(event) {
         fileWatcher.gobalChangeFileObj = event;
-        console.log('fileWatcher.gobalChangeFileObj watch',fileWatcher.gobalChangeFileObj)
         gulp.start('js');
     });
     //watch ts

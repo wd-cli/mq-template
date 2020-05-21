@@ -51,6 +51,7 @@ let util = {
         return str;
     },
     getResolvePath: function(file, matchstr, matchpath) {
+        let dependencies = config.dependencies();
         var parseResult = path.parse(file.path),
             filepath = path.resolve(parseResult.dir, matchpath);
 
@@ -62,9 +63,11 @@ let util = {
             return matchstr;
         } else {
             var str = util.getRelativePath(file.path, config);
-
-            str += '/lib/' + matchpath
-
+            if (dependencies.indexOf(matchpath) === -1) {
+                str += '/lib/' + matchpath
+            }else {
+                str += matchpath
+            }
             return matchstr.replace(matchpath, str);
         }
     }

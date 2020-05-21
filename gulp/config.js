@@ -18,27 +18,27 @@
  */
 const path = require('path');
 
-module.exports = {
-    //项目名称
-    name: "shop",
-    //server端口
-    port: 5020,
+let config =  {
+    name: "shop",  //项目名称
+    port: 5020,  //server端口
+    lib: 'lib',
     root: path.resolve(__dirname, '../'),
     src: path.resolve(__dirname, '../src'),
-    lib: 'lib',
     build: path.resolve(__dirname, '../build'),
     pages: 'pages',
-    //标志环境配置变量，默认为线上环境
-    environment: 3,
-    //是否是开发环境
-    dev: false,
+    environment: 3,  //标志环境配置变量，默认为线上环境
+    dev: false,  //是否是开发环境
     compress: false,
     mode: 2, //1:组件开发模式，2：项目开发模式
     assets: '*.json',
     ignore: '{bower.json,.bower.json}',
-    // include: [],
-    //replace功能，可替换指定变量
-    replace: [{
+    dependencies: function() {   // 依赖列表
+        let packageJson = require(config.root + '/package.json');
+        let { dependencies } = packageJson;
+        dependencies = Object.keys(dependencies);
+        return dependencies;
+    },
+    replace: [{  //replace功能，可替换指定变量
         //环境变量
         name: "environment",
         value: function(args) {
@@ -52,3 +52,5 @@ module.exports = {
         }
     }]
 };
+module.exports = config;
+

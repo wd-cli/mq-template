@@ -41,7 +41,6 @@ gulp.task('eslint', function() {
 // });
 
 gulp.task('json', function() {
-    console.log('json')
     if (config.mode == 1) {
         return null;
     }
@@ -82,12 +81,9 @@ gulp.task('json', function() {
 });
 
 gulp.task('html', function() {
-   
     if (fileWatcher.gobalChangeFileObj) return fileWatcher.changeFileHandle();
-    console.log('html')
     var source = [path.join(config.src, '/**/*.' + ORIGIN_HTML_SUFFIX), '!' + path.join(config.src, '/**/', config.ignore)],
         stream;
-
     !config.dev && config.mode == 1 && source.push('!' + path.join(config.src, config.lib, '/**/*'));
     stream = gulp.src(source);
     //替换变量
@@ -98,10 +94,7 @@ gulp.task('html', function() {
     return stream.pipe(gulp.dest(config.build));
 });
 gulp.task('js', function() {
-   console.log('fileWatcher.gobalChangeFileObj base',fileWatcher.gobalChangeFileObj)
-
     if (fileWatcher.gobalChangeFileObj) return fileWatcher.changeFileHandle();
-    console.log('js')
     var source = [
         path.join(config.src, '/**/*.js'), 
         '!' + path.join(config.src, '/iconfont/*'), // iconfont不需要拷贝
@@ -121,9 +114,7 @@ gulp.task('js', function() {
             .pipe(gulp.dest(config.build));
 });
 gulp.task('ts', function() {
-    
     if (fileWatcher.gobalChangeFileObj) return fileWatcher.changeFileHandle();
-    console.log('ts')
     let tsProject = ts.createProject(config.root + '/tsconfig.json');
     let source = [path.join(config.src, '/**/*.ts'), '!' + path.join(config.src, '/**/', config.ignore)];
     let stream;
@@ -138,9 +129,7 @@ gulp.task('ts', function() {
             .pipe(gulp.dest(config.build));
 });
 gulp.task('css', function() {
-   
     if (fileWatcher.gobalChangeFileObj) return fileWatcher.changeFileHandle();
-    console.log('css')
     var source = [path.join(`${config.src}/**/*.{${ORIGIN_CSS_SUFFIX},${CSS_SUFFIX}}`), '!' + path.join(config.src, '/**/', config.ignore), '!' + path.join(config.src, config.lib, '/**/*')],
         stream;
     !config.dev && config.mode == 1 && source.push('!' + path.join(config.src, '/**/', publishIgnore));

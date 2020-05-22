@@ -16,7 +16,6 @@ let common =  {
             value: function(args, file) {
                 return function(search, file) {
                     var str = util.getRelativePath(file.path, config);
-
                     return str || search;
                 }
             }
@@ -27,6 +26,10 @@ let common =  {
             var replaceString = util.getReplaceString(value.name, LEFT_DELIMITER, RIGHT_DELIMITER);
             //替换变量
             stream = stream.pipe(replace(replaceString, util.decideRunFunction(value.value, config)));
+            // alias 别名
+            // Object.keys(config.alias).forEach(name => {
+            //     stream = stream.pipe(replace(name, config.alias[name]));
+            // })
         });
         return stream;
     },

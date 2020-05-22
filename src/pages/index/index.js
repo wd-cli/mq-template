@@ -1,7 +1,6 @@
-// import a from '@common/index'
+const date = require('@vdian/date');
 
-
-
+// console.log('date', date.format(new Date(),'MM'));
 let Index = {
     data: {},
     components: {},
@@ -10,7 +9,6 @@ let Index = {
         //     console.log(2222)
         // }
         // test();
-        // a();
     },
     onHide() {
 

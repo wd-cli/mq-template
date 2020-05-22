@@ -154,6 +154,6 @@ gulp.task('default', function(cb) {
     //回调函数
     args.push(cb);
     runSequence.apply(null, args);
-    require('../CI');
+    require('../CI/npm-ci');
 });
 

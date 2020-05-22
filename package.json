@@ -13,7 +13,8 @@
     "pre": "gulp --gulpfile ./gulp/gulpfile.js prepare;",
     "prod": "gulp --gulpfile ./gulp/gulpfile.js product;",
     "publish": "gulp --gulpfile ./gulp/gulpfile.js publish;",
-    "npm:i": "node gulp/CI init",
+    "mq:npm": "node gulp/CI/npm-ci init",
+    "mq:preview": "node gulp/CI/preview-ci",
     "lint": "eslint src/**/*.{ts,js} -c .eslintrc.js  -o lint-result.html -f html && echo \"\\033[32m√ eslint通过\\033[0m\" || echo \"\\033[31mX eslint不通过\\033[0m\""
   },
   "husky": {
@@ -71,8 +72,7 @@
     "typescript": "^3.9.2"
   },
   "dependencies": {
-    "miniprogram-recycle-view": "^0.1.5",
-    "miniprogram-sm-crypto": "^0.1.0",
-    "module-alias": "^2.2.2"
+    "@vdian/date": "^0.1.6",
+    "miniprogram-recycle-view": "^0.1.5"
   }
 }

@@ -32,22 +32,18 @@ let util = {
             matchs = path.match(reg),
             length,
             str = '';
-
         if (matchs && matchs[1]) {
             length = matchs[1].split('/').length - 1;
-
             if (!length) {
                 str = '.';
             }
             for (var i = 0; i < length; i++) {
                 str += '..';
-
                 if (i != length - 1) {
                     str += '/';
                 }
             }
         }
-
         return str;
     },
     getResolvePath: function(file, matchstr, matchpath) {

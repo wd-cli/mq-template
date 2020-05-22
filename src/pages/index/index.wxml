@@ -8,5 +8,6 @@
             </view>
         </recycle-item>
         <view slot="after">长列表后面的内容</view>
+        <van-button type="primary">按钮</van-button>
     </recycle-view>
 </view>

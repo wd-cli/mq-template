@@ -142,6 +142,7 @@ gulp.task('css', function() {
     stream = stream.pipe(less()).pipe(rename(function(path) {
         path.extname = "." + CSS_SUFFIX
     }));
+    !config.dev && config.compress && (stream = stream.pipe(cleancss()));
     return stream.pipe(gulp.dest(config.build));
 });
 gulp.task('default', function(cb) {

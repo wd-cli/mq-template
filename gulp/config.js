@@ -30,7 +30,7 @@ let config =  {
     dev: false,  //是否是开发环境
     compress: false,
     mode: 2, //1:组件开发模式，2：项目开发模式
-    assets: '*.json',
+    assets: '*.{json,png,jpg,gif}',
     ignore: '{bower.json,.bower.json}',
     dependencies: function() {   // 依赖列表
         let packageJson = require(config.root + '/package.json');

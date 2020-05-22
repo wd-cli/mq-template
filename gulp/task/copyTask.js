@@ -2,6 +2,7 @@ const gulp = require('gulp');
 const path = require('path');
 const cleancss = require('gulp-clean-css');
 const modules = require('../common');
+const htmlmin = require('gulp-htmlmin');
 const { CSS_SUFFIX, HTML_SUFFIX, publishIgnore } = require('../constants');
 
 let config = require('../config');

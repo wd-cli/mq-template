@@ -1,11 +1,10 @@
 const ci = require('miniprogram-ci');
-const path = require('path');
 const fs = require('fs');
 const ora = require('ora');
 const { promisify } = require('util');
 let ncp = require('ncp');
-ncp.limit = 16;
 const promisifyNcp = promisify(ncp);
+const exec = promisify(require('child_process').exec);
 const del = require('del');
 const config = require('../config');
 const project = require('./ci-project');
@@ -13,11 +12,12 @@ const project = require('./ci-project');
 (async () => {
   let loading;
   let isCache;
+  let packageJson;
   let argv = process.argv[process.argv.length - 1];
-  // let project;
-  
-  loading = ora();
-  
+  let buildPackageJson = config.build + '/package.json';
+  let rootPackageJson = config.root + '/package.json';
+
+  loading = ora();  
   if (!fs.existsSync(config.build)) { // 第一次
     fs.mkdirSync(config.build);
     fs.mkdirSync(config.build + '/node_modules');
@@ -32,10 +32,10 @@ const project = require('./ci-project');
         del.sync([
           config.build + '/node_modules',
           config.build + '/miniprogram_npm',
-          config.build + '/package.json'
+          buildPackageJson
         ], { force: true });
         loading.succeed('清空完毕');
-        await promisifyNcp(config.root + '/package.json', config.build + '/package.json');
+        await promisifyNcp(rootPackageJson, buildPackageJson);
       }
       isCache = false;
     } else {
@@ -44,10 +44,27 @@ const project = require('./ci-project');
   }
   try {
     if (!isCache) {
-      // node_modules拷贝
-      loading.start('正在拷贝node_modules...');
-      await promisifyNcp(config.root + '/node_modules',config.build + '/node_modules');
-      loading.succeed('拷贝完成');
+      if (!fs.existsSync(buildPackageJson)) {
+        await promisifyNcp(rootPackageJson, buildPackageJson);
+      }
+      packageJson = require(buildPackageJson);
+      delete packageJson.devDependencies;
+      fs.writeFileSync(buildPackageJson, JSON.stringify(packageJson), {encoding: 'utf8'});
+      
+      // 安装npm
+      loading.start('正在安装npm包...');
+      let { stdout, stderr, error } = await exec('npm install',{
+        cwd: config.build
+      })
+      if (error) {
+        loading.fail('安装失败');
+        del.sync(config.build + '/*' , {force: true});
+        console.log(error);
+        return
+      } 
+      console.log(stdout);
+      console.log(stderr);
+      loading.succeed('安装完成');
 
       // 构建npm包
       loading.start('正在构建小程序npm包...');
@@ -59,15 +76,8 @@ const project = require('./ci-project');
       })
       loading.succeed('构建完成');
     }
-    // project = new ci.Project({
-    //   appid: ciConfig.appid,
-    //   type: 'miniProgram',
-    //   projectPath: config.build,
-    //   privateKeyPath: ciConfig.privateKeyPath,
-    //   ignores: [path.resolve(__dirname, '../build/node_modules/**/*')],
-    // })
-    
   } catch (error) {
+    del.sync([config.build + '/*'], {force: true});
     loading.fail('编译失败');
     console.log(error);
   }

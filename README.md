@@ -34,6 +34,3 @@ npm run mq:preview
 - - appid 开发者appid
 - - privateKeyPath 前应访问"微信公众平台-开发-开发设置"后下载代码上传密钥
 > IP白名单需要配置，可能构建会报IP地址无效
-
-- module-alias
-- gulp-shell

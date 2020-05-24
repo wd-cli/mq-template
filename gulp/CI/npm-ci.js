@@ -17,7 +17,7 @@ const project = require('./ci-project');
   let buildPackageJson = config.build + '/package.json';
   let rootPackageJson = config.root + '/package.json';
 
-  loading = ora();  
+  loading = ora();
   if (!fs.existsSync(config.build)) { // 第一次
     fs.mkdirSync(config.build);
     fs.mkdirSync(config.build + '/node_modules');
@@ -49,19 +49,19 @@ const project = require('./ci-project');
       }
       packageJson = require(buildPackageJson);
       delete packageJson.devDependencies;
-      fs.writeFileSync(buildPackageJson, JSON.stringify(packageJson), {encoding: 'utf8'});
-      
+      fs.writeFileSync(buildPackageJson, JSON.stringify(packageJson), { encoding: 'utf8' });
+
       // 安装npm
       loading.start('正在安装npm包...');
-      let { stdout, stderr, error } = await exec('npm install',{
+      let { stdout, stderr, error } = await exec('npm install', {
         cwd: config.build
       })
       if (error) {
         loading.fail('安装失败');
-        del.sync(config.build + '/*' , {force: true});
+        del.sync(config.build + '/*', { force: true });
         console.log(error);
         return
-      } 
+      }
       console.log(stdout);
       console.log(stderr);
       loading.succeed('安装完成');
@@ -77,7 +77,7 @@ const project = require('./ci-project');
       loading.succeed('构建完成');
     }
   } catch (error) {
-    del.sync([config.build + '/*'], {force: true});
+    del.sync([config.build + '/*'], { force: true });
     loading.fail('编译失败');
     console.log(error);
   }

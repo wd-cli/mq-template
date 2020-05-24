@@ -15,6 +15,12 @@ module.exports = [
         message: '是否使用typescript?'
     },
     // {
+    //     type: 'list',
+    //     name: 'project',
+    //     choices: list,
+    //     message: '请选择一个模版',
+    // }
+    // {
     //     type: 'input',
     //     name: 'author',
     //     message: 'author'

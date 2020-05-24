@@ -1,4 +1,6 @@
 # 小程序模版
+> 该模版默认支持typescript、less、eslint
+
 ## 开发流程
 - 安装依赖
 ```

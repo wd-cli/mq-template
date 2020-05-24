@@ -103,7 +103,7 @@ page {
   background-color: #f5f5f5;
 }
 page .txt {
-  color: yellow;
+  color: red;
 }
 page div {
   font-size: 24px;

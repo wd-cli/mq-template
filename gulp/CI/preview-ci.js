@@ -16,7 +16,7 @@ const project = require('./ci-project');
          es6: true,
        },
        qrcodeFormat: 'image',
-       qrcodeOutputDest: `${config.build}/qrcode.png`, //二维码文件保存路径
+       qrcodeOutputDest: `${config.root}/dist/qrcode.png`, //二维码文件保存路径
        onProgressUpdate: () => {},
        // pagePath: `${config.build}/preview`, // 预览页面
        // searchQuery: 'a=1&b=2',  // 预览参数 [注意!]这里的`&`字符在命令行中应写成转义字符`\&`

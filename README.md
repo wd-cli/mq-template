@@ -15,6 +15,7 @@ npm run dev-pre
 npm run mq:npm
 ```
 - 生成预览码
+> 预览码目前是基于dist生成
 ```
 npm run mq:preview
 ```
